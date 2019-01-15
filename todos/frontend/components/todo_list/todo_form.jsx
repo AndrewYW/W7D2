@@ -13,7 +13,11 @@ class TodoForm extends React.Component {
   onSubmit(event) {
     const id = Utils.uniqueId();
     event.preventDefault();
-    this.props.receiveTodo({id: id, ...this.state});
+    const todo = this.state;
+    this.props.createTodo(todo).then( () => {
+      this.setState({title: "", body: ""});
+    });
+    
   }
 
   updateField(field) {
@@ -25,6 +29,10 @@ class TodoForm extends React.Component {
   }
 
   render() {
+    const errors = this.props.errors.map((error, idx) => (
+      <li key={idx}>{error}</li>
+    ));
+
     return (
       <>
       <form>
@@ -33,6 +41,8 @@ class TodoForm extends React.Component {
           <input type="text" name="todoListItem[body]" onChange={this.updateField("body")} value={this.state.body}/>
       
           <button type="submit" onClick={this.onSubmit}>Add a turnip</button>
+
+          <ul hidden={this.props.errors.length === 0 ? "hidden" : ""}>{errors}</ul>
       </form>
       </>
     )

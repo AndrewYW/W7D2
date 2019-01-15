@@ -8,7 +8,6 @@ class TodoDetailView extends React.Component {
 
   handleDelete(e) {
     e.preventDefault();
-    debugger
     this.props.removeTodo(this.props.todo);
   }
 

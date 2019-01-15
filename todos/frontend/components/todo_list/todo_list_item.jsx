@@ -12,6 +12,7 @@ class TodoListItem extends React.Component {
 
   toggleDone(e) {
     e.preventDefault();
+    debugger
     this.props.updateTodo(this.props.todo);
   }
 

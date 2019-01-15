@@ -1,5 +1,5 @@
 import { UPDATE_TODO, RECEIVE_TODOS, RECEIVE_TODO, REMOVE_TODO } from "../actions/todo_actions";
-
+import { merge } from 'lodash'
 const initialState = {
   1: {
     id: 1,
@@ -15,21 +15,25 @@ const initialState = {
   },
 };
 
-const todosReducer = (state = initialState, action) => {
+const todosReducer = (state = {}, action) => {
+  
+  const newState = merge({}, state);
+
   switch(action.type) {
     case RECEIVE_TODOS:
-      return Object.assign({}, action.todos);
+      action.todos.forEach((todo) => {
+        newState[todo.id] = todo;
+      });
+      return newState;
     case RECEIVE_TODO:
-      return ({...state, [action.todo.id]: action.todo});
+      newState[action.todo.id] = action.todo;
+      return newState;
     case REMOVE_TODO:
-      const newTodos = Object.assign({}, state);
-      delete(newTodos[action.todo.id]);
-      return newTodos;
-
+      delete(newState[action.todo.id]);
+      return newState;
     case UPDATE_TODO:
-      const updatedTodos = Object.assign({}, state);
-      updatedTodos[action.todo.id].done = !updatedTodos[action.todo.id].done;
-      return updatedTodos;
+      newState[action.todo.id].done = !newState[action.todo.id].done;
+      return newState;
     default:
       return state;
   }
