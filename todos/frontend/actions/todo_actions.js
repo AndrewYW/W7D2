@@ -21,10 +21,15 @@ export const removeTodo = (todo) => ({
   todo
 });
 
-export const updateTodo = (todo) => ({
-  type: UPDATE_TODO,
-  todo
-});
+export const updateTodo = todo => {
+  return (dispatch) => {
+    return APIUtil.updateTodo(todo)
+    .then(
+      todo => dispatch(receiveTodo(todo)),
+      err => dispatch(receiveErrors(err.responseJSON))
+      ).then(() => dispatch(clearErrors()));
+  };
+};
 
 export const fetchTodos = () => {
   return (dispatch) => {
@@ -38,6 +43,14 @@ export const createTodo = todo => dispatch => (
   APIUtil.createTodo(todo)
     .then(
       todo => dispatch(receiveTodo(todo)),
+      err => dispatch(receiveErrors(err.responseJSON))
+    ).then(() => dispatch(clearErrors()))
+);
+
+export const deleteTodo = todo => dispatch => (
+  APIUtil.deleteTodo(todo)
+    .then(
+      todo => dispatch(removeTodo(todo)),
       err => dispatch(receiveErrors(err.responseJSON))
     ).then(() => dispatch(clearErrors()))
 );

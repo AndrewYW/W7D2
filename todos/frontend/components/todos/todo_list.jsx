@@ -10,7 +10,7 @@ class TodoList extends React.Component {
   render() {
     const list = this.props.todos.map((todo, idx) => {
       // debugger
-      return <TodoListItem todo={todo} key={todo.id} removeTodo={this.props.removeTodo} updateTodo={this.props.updateTodo}/>
+      return <TodoListItem todo={todo} key={todo.id} updateTodo={this.props.updateTodo}/>
     });
 
 

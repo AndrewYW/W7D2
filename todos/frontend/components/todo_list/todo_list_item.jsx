@@ -1,5 +1,6 @@
 import React from 'react';
-import TodoDetailView from './todo_detail_view';
+import TodoDetailView from './todo_detail_view_container';
+import { merge } from 'lodash';
 
 class TodoListItem extends React.Component {
   constructor(props) {
@@ -12,8 +13,9 @@ class TodoListItem extends React.Component {
 
   toggleDone(e) {
     e.preventDefault();
-    debugger
-    this.props.updateTodo(this.props.todo);
+    const updatedTodo = merge({}, this.props.todo);
+    updatedTodo.done = !this.props.todo.done;
+    this.props.updateTodo(updatedTodo);
   }
 
   toggleDetail(e) {
@@ -26,7 +28,7 @@ class TodoListItem extends React.Component {
       <li>
         <p onClick={this.toggleDetail}>{this.props.todo.title}</p>
         <button type="submit" onClick={this.toggleDone}>{this.props.todo.done ? "Undo" : "Done"}</button>
-        <div hidden={this.state.detail ? "" : "hidden"}><TodoDetailView todo={this.props.todo} removeTodo={this.props.removeTodo} /></div>
+        <div hidden={this.state.detail ? "" : "hidden"}><TodoDetailView todo={this.props.todo} /></div>
       </li>
     )
   }
